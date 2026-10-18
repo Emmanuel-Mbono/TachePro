@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:TachePro.ViewModels"
+             x:Class="TachePro.Views.DashboardPage"
+             x:DataType="vm:DashboardViewModel"
+             Shell.NavBarIsVisible="False">
+    <ScrollView>
+        <VerticalStackLayout Padding="16,16,16,8" Spacing="12">
+            <Label Text="Tableau d'avancement" Style="{StaticResource Title}" />
+
+            <!-- Progression globale -->
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Progression globale" Style="{StaticResource Muted}" VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="{Binding ProgressText}" FontAttributes="Bold" FontSize="16" />
+                    </Grid>
+                    <ProgressBar Progress="{Binding Progress}" />
+                    <Label Text="{Binding Summary}" Style="{StaticResource Muted}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Compteurs par statut -->
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                <Border Style="{StaticResource Card}">
+                    <VerticalStackLayout HorizontalOptions="Center">
+                        <Label Text="{Binding TodoCount}" Style="{StaticResource Title}" HorizontalOptions="Center" />
+                        <Label Text="À faire" Style="{StaticResource Muted}" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource Card}">
+                    <VerticalStackLayout HorizontalOptions="Center">
+                        <Label Text="{Binding DoingCount}" Style="{StaticResource Title}" HorizontalOptions="Center" />
+                        <Label Text="En cours" Style="{StaticResource Muted}" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="2" Style="{StaticResource Card}">
+                    <VerticalStackLayout HorizontalOptions="Center">
+                        <Label Text="{Binding DoneCount}" Style="{StaticResource Title}" HorizontalOptions="Center" />
+                        <Label Text="Terminé" Style="{StaticResource Muted}" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- Échéances proches -->
+            <Label Text="Échéances proches" Style="{StaticResource Heading}" Margin="0,8,0,0" />
+            <Label Text="Aucune échéance à venir." Style="{StaticResource Muted}">
+                <Label.Triggers>
+                    <DataTrigger TargetType="Label" Binding="{Binding HasUpcoming}" Value="True">
+                        <Setter Property="IsVisible" Value="False" />
+                    </DataTrigger>
+                </Label.Triggers>
+            </Label>
+            <VerticalStackLayout BindableLayout.ItemsSource="{Binding Upcoming}"
+                                 BindableLayout.ItemTemplate="{StaticResource TaskRowTemplate}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

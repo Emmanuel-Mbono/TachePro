@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:TachePro.ViewModels"
+             x:Class="TachePro.Views.LoginPage"
+             x:DataType="vm:LoginViewModel"
+             Shell.NavBarIsVisible="False">
+    <ScrollView>
+        <VerticalStackLayout Padding="24,0" Spacing="6" VerticalOptions="Center">
+
+            <Border BackgroundColor="{StaticResource Primary}" StrokeThickness="0" StrokeShape="RoundRectangle 16"
+                    WidthRequest="64" HeightRequest="64" HorizontalOptions="Center" Margin="0,32,0,0">
+                <Label Text="TP" TextColor="White" FontSize="24" FontAttributes="Bold"
+                       HorizontalOptions="Center" VerticalOptions="Center" />
+            </Border>
+            <Label Text="TâchePro" Style="{StaticResource Title}" HorizontalOptions="Center" Margin="0,8,0,0" />
+            <Label Text="Connectez-vous à votre équipe" Style="{StaticResource Muted}" HorizontalOptions="Center" Margin="0,0,0,16" />
+
+            <Label Text="Adresse e-mail" Style="{StaticResource FieldLabel}" />
+            <Border Style="{StaticResource Field}">
+                <Entry Text="{Binding Email}" Placeholder="name@company.com" Keyboard="Email"
+                       SemanticProperties.Description="Adresse e-mail" />
+            </Border>
+
+            <Label Text="Mot de passe" Style="{StaticResource FieldLabel}" />
+            <Border Style="{StaticResource Field}">
+                <Border.Triggers>
+                    <DataTrigger TargetType="Border" Binding="{Binding HasError}" Value="True">
+                        <Setter Property="Stroke" Value="{StaticResource DangerBrush}" />
+                    </DataTrigger>
+                </Border.Triggers>
+                <Grid ColumnDefinitions="*,Auto">
+                    <Entry Text="{Binding Password}" Placeholder="••••••••" IsPassword="{Binding HidePassword}"
+                           SemanticProperties.Description="Mot de passe" />
+                    <Button Grid.Column="1" Text="{Binding ShowHideLabel}" Style="{StaticResource LinkButton}"
+                            Command="{Binding TogglePasswordCommand}" />
+                </Grid>
+            </Border>
+
+            <Grid ColumnDefinitions="*,Auto" Margin="0,2,0,8">
+                <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource ErrorText}" VerticalOptions="Center" />
+                <Label Grid.Column="1" Text="Mot de passe oublié ?" FontSize="12" FontAttributes="Bold"
+                       TextColor="{StaticResource Primary}" VerticalOptions="Center">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </Grid>
+
+            <Button Text="Se connecter" Command="{Binding LoginCommand}" />
+
+            <VerticalStackLayout Margin="0,24,0,0" Spacing="0" HorizontalOptions="Center">
+                <Label Text="Pas encore de compte ?" Style="{StaticResource Muted}" HorizontalOptions="Center" />
+                <Button Text="S'inscrire" Style="{StaticResource LinkButton}" Command="{Binding GoToRegisterCommand}" />
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

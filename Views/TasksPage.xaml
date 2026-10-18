@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:TachePro.ViewModels"
+             x:Class="TachePro.Views.TasksPage"
+             x:DataType="vm:TasksViewModel"
+             Shell.NavBarIsVisible="False">
+    <Grid RowDefinitions="Auto,Auto,*" Padding="16,16,16,0" RowSpacing="8">
+
+        <!-- En-tête + filtre par statut -->
+        <Grid ColumnDefinitions="*,Auto">
+            <Label Text="Mes tâches" Style="{StaticResource Title}" VerticalOptions="Center" />
+            <Button Grid.Column="1" Text="{Binding StatusFilterLabel}" Style="{StaticResource LinkButton}"
+                    Command="{Binding FilterStatusCommand}" />
+        </Grid>
+
+        <!-- Filtre par membre -->
+        <ScrollView Grid.Row="1" Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+            <HorizontalStackLayout Spacing="8" BindableLayout.ItemsSource="{Binding Chips}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FilterChip">
+                        <Button Text="{Binding Name}" Style="{StaticResource Chip}" Command="{Binding SelectCommand}">
+                            <Button.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding IsSelected}" Value="True">
+                                    <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                    <Setter Property="TextColor" Value="White" />
+                                </DataTrigger>
+                            </Button.Triggers>
+                        </Button>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <Grid Grid.Row="2">
+
+            <!-- Écran 4 : liste -->
+            <CollectionView ItemsSource="{Binding Tasks}" ItemTemplate="{StaticResource TaskRowTemplate}"
+                            IsVisible="{Binding ShowList}" Margin="0,4,0,0">
+                <CollectionView.Footer>
+                    <BoxView HeightRequest="84" Color="Transparent" />
+                </CollectionView.Footer>
+            </CollectionView>
+
+            <!-- Écran 10 : chargement (squelettes) -->
+            <VerticalStackLayout IsVisible="{Binding IsLoading}" Spacing="8" Margin="0,4,0,0">
+                <Border Style="{StaticResource Card}" HeightRequest="76">
+                    <VerticalStackLayout Spacing="8" VerticalOptions="Center">
+                        <BoxView HeightRequest="12" WidthRequest="170" HorizontalOptions="Start" CornerRadius="6"
+                                 Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" />
+                        <BoxView HeightRequest="10" WidthRequest="110" HorizontalOptions="Start" CornerRadius="5"
+                                 Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Style="{StaticResource Card}" HeightRequest="76">
+                    <VerticalStackLayout Spacing="8" VerticalOptions="Center">
+                        <BoxView HeightRequest="12" WidthRequest="170" HorizontalOptions="Start" CornerRadius="6"
+                                 Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" />
+                        <BoxView HeightRequest="10" WidthRequest="110" HorizontalOptions="Start" CornerRadius="5"
+                                 Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Style="{StaticResource Card}" HeightRequest="76">
+                    <VerticalStackLayout Spacing="8" VerticalOptions="Center">
+                        <BoxView HeightRequest="12" WidthRequest="170" HorizontalOptions="Start" CornerRadius="6"
+                                 Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" />
+                        <BoxView HeightRequest="10" WidthRequest="110" HorizontalOptions="Start" CornerRadius="5"
+                                 Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Style="{StaticResource Card}" HeightRequest="76">
+                    <VerticalStackLayout Spacing="8" VerticalOptions="Center">
+                        <BoxView HeightRequest="12" WidthRequest="170" HorizontalOptions="Start" CornerRadius="6"
+                                 Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" />
+                        <BoxView HeightRequest="10" WidthRequest="110" HorizontalOptions="Start" CornerRadius="5"
+                                 Color="{AppThemeBinding Light={StaticResource BorderLight}, Dark={StaticResource BorderDark}}" />
+                    </VerticalStackLayout>
+                </Border>
+                <Label Text="Chargement de vos tâches…" Style="{StaticResource Muted}" HorizontalOptions="Center" Margin="0,12,0,0" />
+            </VerticalStackLayout>
+
+            <!-- Écran 8 : état vide -->
+            <VerticalStackLayout IsVisible="{Binding IsEmpty}" VerticalOptions="Center" Spacing="8" Padding="24">
+                <Label Text="📋" FontSize="44" HorizontalOptions="Center" />
+                <Label Text="Aucune tâche" Style="{StaticResource Heading}" HorizontalOptions="Center" />
+                <Label Text="Créez la première tâche de votre équipe." Style="{StaticResource Muted}"
+                       HorizontalOptions="Center" HorizontalTextAlignment="Center" />
+                <Button Text="Créer une tâche" Command="{Binding AddTaskCommand}" WidthRequest="220" Margin="0,8,0,0" />
+                <Button Text="Charger des données d'exemple" Style="{StaticResource LinkButton}"
+                        Command="{Binding LoadDemoCommand}" />
+            </VerticalStackLayout>
+
+            <!-- Filtre sans résultat -->
+            <Label Text="Aucune tâche ne correspond à ce filtre." IsVisible="{Binding HasNoResults}"
+                   Style="{StaticResource Muted}" HorizontalOptions="Center" VerticalOptions="Center" />
+
+            <!-- Bouton + : nouvelle tâche -->
+            <Button Text="+" Style="{StaticResource Fab}" Command="{Binding AddTaskCommand}"
+                    IsVisible="{Binding ShowFab}" SemanticProperties.Description="Nouvelle tâche" />
+        </Grid>
+    </Grid>
+</ContentPage>

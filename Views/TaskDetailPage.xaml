@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:TachePro.ViewModels"
+             x:Class="TachePro.Views.TaskDetailPage"
+             x:DataType="vm:TaskDetailViewModel"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
+    <Grid RowDefinitions="Auto,*,Auto">
+        <Grid ColumnDefinitions="48,*,Auto" Padding="8,8,8,0">
+            <Button Text="‹" Style="{StaticResource BackButton}" Command="{Binding GoBackCommand}"
+                    SemanticProperties.Description="Retour" />
+            <Label Grid.Column="1" Text="Détail de la tâche" Style="{StaticResource Heading}"
+                   HorizontalOptions="Center" VerticalOptions="Center" />
+            <Button Grid.Column="2" Text="Modifier" Style="{StaticResource LinkButton}" Command="{Binding EditCommand}" />
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="24,8" Spacing="10">
+                <Label Text="{Binding Title}" Style="{StaticResource Title}" />
+                <Border BackgroundColor="{Binding BadgeBackground}" StrokeThickness="0" StrokeShape="RoundRectangle 11"
+                        Padding="10,3" HorizontalOptions="Start">
+                    <Label Text="{Binding StatusLabel}" TextColor="{Binding BadgeText}" FontSize="12" FontAttributes="Bold" />
+                </Border>
+                <Label Text="{Binding Description}" Style="{StaticResource Muted}" FontSize="14" Margin="0,4,0,8" />
+
+                <Border Style="{StaticResource Card}">
+                    <Grid ColumnDefinitions="*,Auto" HeightRequest="32">
+                        <Label Text="Assignée à" Style="{StaticResource Muted}" FontSize="14" VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="{Binding AssigneeName}" FontAttributes="Bold" VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+                <Border Style="{StaticResource Card}">
+                    <Grid ColumnDefinitions="*,Auto" HeightRequest="32">
+                        <Label Text="Échéance" Style="{StaticResource Muted}" FontSize="14" VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="{Binding DueText}" FontAttributes="Bold" VerticalOptions="Center">
+                            <Label.Triggers>
+                                <DataTrigger TargetType="Label" Binding="{Binding IsOverdue}" Value="True">
+                                    <Setter Property="TextColor" Value="{StaticResource Danger}" />
+                                </DataTrigger>
+                            </Label.Triggers>
+                        </Label>
+                    </Grid>
+                </Border>
+
+                <Label Text="Statut" Style="{StaticResource FieldLabel}" />
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                    <Button Text="À faire" Style="{StaticResource Chip}" Command="{Binding SetStatusCommand}" CommandParameter="AFaire">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding IsTodo}" Value="True">
+                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                <Setter Property="TextColor" Value="White" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Grid.Column="1" Text="En cours" Style="{StaticResource Chip}" Command="{Binding SetStatusCommand}" CommandParameter="EnCours">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding IsDoing}" Value="True">
+                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                <Setter Property="TextColor" Value="White" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Grid.Column="2" Text="Terminé" Style="{StaticResource Chip}" Command="{Binding SetStatusCommand}" CommandParameter="Termine">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding IsDone}" Value="True">
+                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                <Setter Property="TextColor" Value="White" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <VerticalStackLayout Grid.Row="2" Padding="24,8,24,16" Spacing="8">
+            <Button Text="Réassigner" Style="{StaticResource Outline}" Command="{Binding ReassignCommand}" />
+            <Button Text="{Binding PrimaryActionLabel}" Command="{Binding TogglePrimaryCommand}" />
+            <Button Text="Supprimer la tâche" Style="{StaticResource LinkButton}" TextColor="{StaticResource Danger}"
+                    Command="{Binding DeleteCommand}" />
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

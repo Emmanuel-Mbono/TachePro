@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:TachePro.ViewModels">
+
+    <!-- Carte de tâche, partagée par le tableau d'avancement et la liste des tâches -->
+    <DataTemplate x:Key="TaskRowTemplate" x:DataType="vm:TaskRow">
+        <Border Style="{StaticResource Card}" Margin="0,0,0,8">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding OpenCommand}" />
+            </Border.GestureRecognizers>
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                <VerticalStackLayout Spacing="2" VerticalOptions="Center">
+                    <Label Text="{Binding Title}" FontAttributes="Bold" LineBreakMode="TailTruncation" />
+                    <Label Text="{Binding Meta}" Style="{StaticResource Muted}">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding IsOverdue}" Value="True">
+                                <Setter Property="TextColor" Value="{StaticResource Danger}" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </VerticalStackLayout>
+                <Border Grid.Column="1" BackgroundColor="{Binding BadgeBackground}" StrokeThickness="0"
+                        StrokeShape="RoundRectangle 11" Padding="9,3" VerticalOptions="Center">
+                    <Label Text="{Binding StatusLabel}" TextColor="{Binding BadgeText}" FontSize="11" FontAttributes="Bold" />
+                </Border>
+            </Grid>
+        </Border>
+    </DataTemplate>
+</ResourceDictionary>

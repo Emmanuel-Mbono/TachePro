@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:TachePro.ViewModels"
+             x:Class="TachePro.Views.TaskEditPage"
+             x:DataType="vm:TaskEditViewModel"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
+    <Grid RowDefinitions="Auto,*,Auto">
+        <Grid ColumnDefinitions="48,*,48" Padding="8,8,8,0">
+            <Button Text="‹" Style="{StaticResource BackButton}" Command="{Binding GoBackCommand}"
+                    SemanticProperties.Description="Retour" />
+            <Label Grid.Column="1" Text="{Binding PageTitle}" Style="{StaticResource Heading}"
+                   HorizontalOptions="Center" VerticalOptions="Center" />
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="24,8" Spacing="6">
+                <Label Text="Titre" Style="{StaticResource FieldLabel}" />
+                <Border Style="{StaticResource Field}">
+                    <Border.Triggers>
+                        <DataTrigger TargetType="Border" Binding="{Binding HasError}" Value="True">
+                            <Setter Property="Stroke" Value="{StaticResource DangerBrush}" />
+                        </DataTrigger>
+                    </Border.Triggers>
+                    <Entry Text="{Binding Title}" Placeholder="Ex. Préparer la démo" />
+                </Border>
+                <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource ErrorText}" />
+
+                <Label Text="Description" Style="{StaticResource FieldLabel}" />
+                <Border Style="{StaticResource Field}" HeightRequest="96" Padding="10,4">
+                    <Editor Text="{Binding Description}" Placeholder="Détails de la tâche…" />
+                </Border>
+
+                <Label Text="Assignée à" Style="{StaticResource FieldLabel}" />
+                <Border Style="{StaticResource Field}">
+                    <Picker ItemsSource="{Binding Members}" SelectedItem="{Binding SelectedMember}" Title="Choisir un membre" />
+                </Border>
+
+                <Grid ColumnDefinitions="*,Auto" Margin="0,8,0,0">
+                    <Label Text="Échéance" Style="{StaticResource FieldLabel}" Margin="0" VerticalOptions="Center" />
+                    <Switch Grid.Column="1" IsToggled="{Binding HasDueDate}" />
+                </Grid>
+                <Border Style="{StaticResource Field}">
+                    <DatePicker Date="{Binding DueDate}" IsEnabled="{Binding HasDueDate}" Format="dd/MM/yyyy" />
+                </Border>
+
+                <Label Text="Statut" Style="{StaticResource FieldLabel}" />
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                    <Button Text="À faire" Style="{StaticResource Chip}" Command="{Binding SetStatusCommand}" CommandParameter="AFaire">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding IsTodo}" Value="True">
+                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                <Setter Property="TextColor" Value="White" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Grid.Column="1" Text="En cours" Style="{StaticResource Chip}" Command="{Binding SetStatusCommand}" CommandParameter="EnCours">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding IsDoing}" Value="True">
+                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                <Setter Property="TextColor" Value="White" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Grid.Column="2" Text="Terminé" Style="{StaticResource Chip}" Command="{Binding SetStatusCommand}" CommandParameter="Termine">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding IsDone}" Value="True">
+                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                <Setter Property="TextColor" Value="White" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </Grid>
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Button Grid.Row="2" Text="{Binding SaveLabel}" Command="{Binding SaveCommand}" Margin="24,8,24,16" />
+    </Grid>
+</ContentPage>

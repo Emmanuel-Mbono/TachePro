@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:TachePro.ViewModels"
+             x:Class="TachePro.Views.RegisterPage"
+             x:DataType="vm:RegisterViewModel"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
+    <Grid RowDefinitions="Auto,*">
+        <Grid ColumnDefinitions="48,*,48" Padding="8,8,8,0">
+            <Button Text="‹" Style="{StaticResource BackButton}" Command="{Binding GoBackCommand}"
+                    SemanticProperties.Description="Retour" />
+            <Label Grid.Column="1" Text="Créer un compte" Style="{StaticResource Heading}"
+                   HorizontalOptions="Center" VerticalOptions="Center" />
+        </Grid>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="24,8,24,24" Spacing="6">
+                <Label Text="Nom complet" Style="{StaticResource FieldLabel}" />
+                <Border Style="{StaticResource Field}">
+                    <Entry Text="{Binding Name}" Placeholder="Votre nom" />
+                </Border>
+
+                <Label Text="Adresse e-mail" Style="{StaticResource FieldLabel}" />
+                <Border Style="{StaticResource Field}">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Entry Text="{Binding Email}" Placeholder="name@company.com" Keyboard="Email" />
+                        <Label Grid.Column="1" Text="OK ✓" IsVisible="{Binding ShowEmailOk}" FontAttributes="Bold"
+                               TextColor="{StaticResource Success}" VerticalOptions="Center" />
+                    </Grid>
+                </Border>
+
+                <Label Text="Mot de passe" Style="{StaticResource FieldLabel}" />
+                <Border Style="{StaticResource Field}">
+                    <Entry Text="{Binding Password}" Placeholder="8 caractères minimum" IsPassword="True" />
+                </Border>
+                <Label Text="Au moins 8 caractères" IsVisible="{Binding ShowPasswordHint}" Style="{StaticResource ErrorText}" />
+
+                <Label Text="Confirmer le mot de passe" Style="{StaticResource FieldLabel}" />
+                <Border Style="{StaticResource Field}">
+                    <Border.Triggers>
+                        <DataTrigger TargetType="Border" Binding="{Binding ConfirmMismatch}" Value="True">
+                            <Setter Property="Stroke" Value="{StaticResource DangerBrush}" />
+                        </DataTrigger>
+                    </Border.Triggers>
+                    <Entry Text="{Binding Confirm}" Placeholder="••••••••" IsPassword="True" />
+                </Border>
+                <Label Text="Les mots de passe ne correspondent pas" IsVisible="{Binding ConfirmMismatch}" Style="{StaticResource ErrorText}" />
+                <Label Text="{Binding ErrorMessage}" IsVisible="{Binding HasError}" Style="{StaticResource ErrorText}" />
+
+                <Button Text="Créer mon compte" Command="{Binding RegisterCommand}" Margin="0,16,0,0" />
+
+                <VerticalStackLayout Margin="0,16,0,0" Spacing="0" HorizontalOptions="Center">
+                    <Label Text="Déjà inscrit ?" Style="{StaticResource Muted}" HorizontalOptions="Center" />
+                    <Button Text="Se connecter" Style="{StaticResource LinkButton}" Command="{Binding GoBackCommand}" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

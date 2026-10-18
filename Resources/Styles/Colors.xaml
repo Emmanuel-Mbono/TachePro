@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Charte graphique TâchePro : un seul accent + des neutres -->
+    <Color x:Key="Primary">#0F6E56</Color>
+    <Color x:Key="PageLight">#FFFFFF</Color>
+    <Color x:Key="PageDark">#121513</Color>
+    <Color x:Key="SurfaceLight">#F4F6F5</Color>
+    <Color x:Key="SurfaceDark">#232826</Color>
+    <Color x:Key="TextLight">#1B1F1D</Color>
+    <Color x:Key="TextDark">#F2F4F3</Color>
+    <Color x:Key="Text2Light">#5C6662</Color>
+    <Color x:Key="Text2Dark">#A5AFAA</Color>
+    <Color x:Key="BorderLight">#D5DAD7</Color>
+    <Color x:Key="BorderDark">#3A423E</Color>
+    <Color x:Key="Danger">#C0392B</Color>
+    <Color x:Key="Success">#2E7D32</Color>
+    <Color x:Key="Warning">#B7791F</Color>
+    <Color x:Key="DisabledBg">#E3E6E4</Color>
+    <Color x:Key="DisabledText">#8A938F</Color>
+
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}" />
+    <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource Danger}" />
+    <SolidColorBrush x:Key="BorderBrushLight" Color="{StaticResource BorderLight}" />
+    <SolidColorBrush x:Key="BorderBrushDark" Color="{StaticResource BorderDark}" />
+</ResourceDictionary>
